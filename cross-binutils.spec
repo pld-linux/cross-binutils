@@ -48,7 +48,7 @@
 Summary:	A GNU collection of cross-compilation binary utilities
 Name:		%{cross}-binutils
 Version:	2.25
-Release:	0.2
+Release:	0.4
 License:	GPL v3+
 Group:		Development/Tools
 URL:		http://sources.redhat.com/binutils
@@ -230,7 +230,7 @@ for tool in binutils gas ld; do
 done
 touch */configure
 
-function prep_target () {
+prep_target() {
     target=$1
     cond=$2
 
@@ -476,7 +476,6 @@ echo "=== INSTALL po targets ==="
 
 # Add the additional symlink-only targets
 grep ^powerpc target.list | sed -e s/powerpc/ppc/ > symlink-target.list
-cat symlink-target.list >> target.list
 
 # For cross-binutils we drop the documentation.
 echo "=== REMOVE documentation ==="
@@ -519,7 +518,7 @@ build_file_list() {
 	) > files.$arch
 }
 
-for target in $(cat target.list); do
+for target in $(cat target.list symlink-target.list); do
 	build_file_list $target
 done
 
