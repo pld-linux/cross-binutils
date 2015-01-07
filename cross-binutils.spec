@@ -1,3 +1,6 @@
+# TODO
+# - warning: Installed (but unpackaged) file(s) found:
+#        /usr/sh64-linux/sh64-elf
 
 %define cross cross
 %define rpmprefix %{nil}
@@ -48,7 +51,7 @@
 Summary:	A GNU collection of cross-compilation binary utilities
 Name:		%{cross}-binutils
 Version:	2.25
-Release:	0.4
+Release:	0.5
 License:	GPL v3+
 Group:		Development/Tools
 URL:		http://sources.redhat.com/binutils
@@ -511,6 +514,8 @@ build_file_list() {
 	if [ -L $RPM_BUILD_ROOT%{auxbin_prefix}/$target_cpu-* ]; then
 		echo "%{auxbin_prefix}/$target_cpu-*"
 	else
+		echo "%dir %{auxbin_prefix}/$target_cpu-*"
+		echo "%dir %{auxbin_prefix}/$target_cpu-*/bin"
 		echo "%{auxbin_prefix}/$target_cpu-*/bin/*"
 		echo "%{_prefix}/$arch/sys-root"
 	fi
