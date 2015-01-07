@@ -505,16 +505,16 @@ build_file_list() {
 	esac
 
 	(
-	echo '%%defattr(-,root,root,-)'
-	echo %{_bindir}/$arch-[!l]\*
-	echo %{_bindir}/$arch-ld\*
+	echo "%%defattr(-,root,root,-)"
+	echo "%{_bindir}/$arch-[!l]*"
+	echo "%{_bindir}/$arch-ld*"
 	if [ -L $RPM_BUILD_ROOT%{auxbin_prefix}/$target_cpu-* ]; then
-		echo %{auxbin_prefix}/$target_cpu-*
+		echo "%{auxbin_prefix}/$target_cpu-*"
 	else
-		echo %{auxbin_prefix}/$target_cpu-*/bin/\*
+		echo "%{auxbin_prefix}/$target_cpu-*/bin/*"
+		echo "%{_prefix}/$arch/sys-root"
 	fi
-	echo %{_mandir}/man1/$arch-\*
-	echo %{_prefix}/$arch/sys-root
+	echo "%{_mandir}/man1/$arch-*"
 	) > files.$arch
 }
 
