@@ -51,7 +51,7 @@
 Summary:	A GNU collection of cross-compilation binary utilities
 Name:		%{cross}-binutils
 Version:	2.25
-Release:	0.5
+Release:	0.6
 License:	GPL v3+
 Group:		Development/Tools
 URL:		http://sources.redhat.com/binutils
@@ -517,6 +517,9 @@ build_file_list() {
 		echo "%dir %{auxbin_prefix}/$target_cpu-*"
 		echo "%dir %{auxbin_prefix}/$target_cpu-*/bin"
 		echo "%{auxbin_prefix}/$target_cpu-*/bin/*"
+		if [ "$target_cpu" != "$cpu" ]; then
+			echo "%dir %{_prefix}/$arch"
+		fi
 		echo "%{_prefix}/$arch/sys-root"
 	fi
 	echo "%{_mandir}/man1/$arch-*"
