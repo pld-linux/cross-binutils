@@ -215,11 +215,12 @@ cd %{srcdir}
 # On ppc64 we might use 64KiB pages
 sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*ppc.c
 # LTP sucks
-perl -pi -e 's/i\[3-7\]86/i[34567]86/g' */conf*
+# exclude "gas/config", "libiberty/config", it's a dir
+%{__sed} -i -e 's/i\[3-7\]86/i[34567]86/g' $(echo */conf* | sed -e 's#gas/config##;s#libiberty/config##;')
 sed -i -e 's/%''{release}/%{release}/g' bfd/Makefile{.am,.in}
 sed -i -e '/^libopcodes_la_\(DEPENDENCIES\|LIBADD\)/s,$, ../bfd/libbfd.la,' opcodes/Makefile.{am,in}
 # Build libbfd.so and libopcodes.so with -Bsymbolic-functions if possible.
-if gcc %{optflags} -v --help 2>&1 | grep -q -- -Bsymbolic-functions; then
+if %{__cc} %{rpmcflags} -v --help 2>&1 | grep -q -- -Bsymbolic-functions; then
 	sed -i -e 's/^libbfd_la_LDFLAGS = /&-Wl,-Bsymbolic-functions /' bfd/Makefile.{am,in}
 	sed -i -e 's/^libopcodes_la_LDFLAGS = /&-Wl,-Bsymbolic-functions /' opcodes/Makefile.{am,in}
 fi
