@@ -2,9 +2,6 @@
 # - warning: Installed (but unpackaged) file(s) found:
 #        /usr/sh64-linux/sh64-elf
 
-%define cross cross
-%define rpmprefix %{nil}
-
 %define build_all		1
 %define build_alpha		%{build_all}
 %define build_arm		%{build_all}
@@ -49,12 +46,11 @@
 %define build_unicore32		0
 
 Summary:	A GNU collection of cross-compilation binary utilities
-Name:		%{cross}-binutils
+Name:		cross-binutils
 Version:	2.25
-Release:	0.6
+Release:	0.7
 License:	GPL v3+
 Group:		Development/Tools
-URL:		http://sources.redhat.com/binutils
 # Note - the Linux Kernel binutils releases are too unstable and contain too
 # many controversial patches so we stick with the official FSF version
 # instead.
@@ -83,6 +79,7 @@ Patch12:	binutils-2.25-kernel-ld-r.patch
 Patch13:	binutils-2.23.2-aarch64-em.patch
 # Fix detections little endian PPC shared libraries
 Patch14:	binutils-2.24-ldforcele.patch
+URL:		http://sources.redhat.com/binutils
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	gettext
@@ -116,33 +113,33 @@ of an object or archive file), strings (for listing printable strings
 from files), strip (for discarding symbols), and addr2line (for
 converting addresses to file and line).
 
-%package -n %{cross}-binutils-common
+%package common
 Summary:	Cross-build binary utility documentation and translation files
 Group:		Development/Tools
 %if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
 %endif
 
-%description -n %{cross}-binutils-common
+%description common
 Documentation, manual pages and translation files for cross-build
 binary image generation, manipulation and query tools.
 
 %define do_package() \
-%package -n %{rpmprefix}binutils-%1 \
+%package -n binutils-%1 \
 Summary:	Cross-build binary utilities for %1 \
 Group:		Development/Tools \
-Requires:	%{cross}-binutils-common = %{version}-%{release}\
+Requires:	%{name}-common = %{version}-%{release}\
 \
-%description -n %{rpmprefix}binutils-%1 \
+%description -n binutils-%1 \
 Cross-build binary image generation, manipulation and query tools. \
 
 %define do_symlink() \
-%package -n %{rpmprefix}binutils-%1 \
+%package -n binutils-%1 \
 Summary:	Cross-build binary utilities for %1 \
 Group:		Development/Tools \
 Requires:	binutils-%3 = %{version}-%{release}\
 \
-%description -n %{rpmprefix}binutils-%1 \
+%description -n binutils-%1 \
 Cross-build binary image generation, manipulation and query tools. \
 
 %do_package alpha-linux-gnu	%{build_alpha}
@@ -226,7 +223,7 @@ if %{__cc} %{rpmcflags} -v --help 2>&1 | grep -q -- -Bsymbolic-functions; then
 fi
 
 # $PACKAGE is used for the gettext catalog name.
-sed -i -e 's/^ PACKAGE=/ PACKAGE=%{cross}-/' */configure
+sed -i -e 's/^ PACKAGE=/ PACKAGE=cross-/' */configure
 # Undo the name change to run the testsuite.
 for tool in binutils gas ld; do
 	sed -i -e "2aDEJATOOL = $tool" $tool/Makefile.am
@@ -394,8 +391,8 @@ for target in $(cat target.list); do
 done
 
 # for documentation purposes only
-install -d %{cross}-binutils
-cd %{cross}-binutils
+install -d cross-binutils
+cd cross-binutils
 ../%{srcdir}/configure \
 	--disable-dependency-tracking \
 	--disable-silent-rules \
@@ -412,7 +409,7 @@ cd %{cross}-binutils
 	--sharedstatedir=%{_sharedstatedir} \
 	--mandir=%{_mandir} \
 	--infodir=%{_infodir} \
-	--program-prefix=%{cross}- \
+	--program-prefix=cross- \
 	--disable-shared \
 	--with-bugurl="http://bugs.pld-linux.org"
 
@@ -460,18 +457,18 @@ for target in $(cat target.list); do
 done
 
 echo "=== INSTALL man targets ==="
-%{__make} install-man1 -C %{cross}-binutils/binutils/doc DESTDIR=$RPM_BUILD_ROOT
-%{__make} install-man1 -C %{cross}-binutils/gas/doc DESTDIR=$RPM_BUILD_ROOT
-%{__make} install-man1 -C %{cross}-binutils/ld DESTDIR=$RPM_BUILD_ROOT
-%{__make} install-man1 -C %{cross}-binutils/gprof DESTDIR=$RPM_BUILD_ROOT
+%{__make} install-man1 -C cross-binutils/binutils/doc DESTDIR=$RPM_BUILD_ROOT
+%{__make} install-man1 -C cross-binutils/gas/doc DESTDIR=$RPM_BUILD_ROOT
+%{__make} install-man1 -C cross-binutils/ld DESTDIR=$RPM_BUILD_ROOT
+%{__make} install-man1 -C cross-binutils/gprof DESTDIR=$RPM_BUILD_ROOT
 
 echo "=== INSTALL po targets ==="
-%{__make} install -C %{cross}-binutils/binutils/po DESTDIR=$RPM_BUILD_ROOT
-%{__make} install -C %{cross}-binutils/gas/po DESTDIR=$RPM_BUILD_ROOT
-%{__make} install -C %{cross}-binutils/ld/po DESTDIR=$RPM_BUILD_ROOT
-%{__make} install -C %{cross}-binutils/gprof/po DESTDIR=$RPM_BUILD_ROOT
-%{__make} install -C %{cross}-binutils/bfd/po DESTDIR=$RPM_BUILD_ROOT
-%{__make} install -C %{cross}-binutils/opcodes/po DESTDIR=$RPM_BUILD_ROOT
+%{__make} install -C cross-binutils/binutils/po DESTDIR=$RPM_BUILD_ROOT
+%{__make} install -C cross-binutils/gas/po DESTDIR=$RPM_BUILD_ROOT
+%{__make} install -C cross-binutils/ld/po DESTDIR=$RPM_BUILD_ROOT
+%{__make} install -C cross-binutils/gprof/po DESTDIR=$RPM_BUILD_ROOT
+%{__make} install -C cross-binutils/bfd/po DESTDIR=$RPM_BUILD_ROOT
+%{__make} install -C cross-binutils/opcodes/po DESTDIR=$RPM_BUILD_ROOT
 
 # Add the additional symlink-only targets
 grep ^powerpc target.list | sed -e s/powerpc/ppc/ > symlink-target.list
@@ -530,8 +527,8 @@ done
 # same, so symlink them to the core package
 echo "=== CROSSLINK man pages ==="
 cd $RPM_BUILD_ROOT%{_mandir}/man1
-	for i in %{cross}-*.1*; do
-		j=${i#%{cross}-}
+	for i in cross-*.1*; do
+		j=${i#cross-}
 
 		for k in *-$j; do
 			if [ $k != $i ]; then
@@ -541,7 +538,7 @@ cd $RPM_BUILD_ROOT%{_mandir}/man1
 	done
 
 	# Add ld.bfd manual pages
-	find * -name "*ld.1*" -a ! -name "%{cross}-ld.1*" -print |
+	find * -name "*ld.1*" -a ! -name "cross-ld.1*" -print |
 	while read x; do
 		y=$(echo $x | sed -e s/ld[.]1/ld.bfd.1/)
 		ln -s $x $y
@@ -549,33 +546,33 @@ cd $RPM_BUILD_ROOT%{_mandir}/man1
 cd -
 
 # Find the language files which only exist in the common package
-%find_lang %{cross}-binutils
-%find_lang %{cross}-opcodes
-%find_lang %{cross}-bfd
-%find_lang %{cross}-gas
-%find_lang %{cross}-ld
-%find_lang %{cross}-gprof
+%find_lang cross-binutils
+%find_lang cross-opcodes
+%find_lang cross-bfd
+%find_lang cross-gas
+%find_lang cross-ld
+%find_lang cross-gprof
 cat \
-%{cross}-binutils.lang \
-%{cross}-opcodes.lang \
-%{cross}-bfd.lang \
-%{cross}-gas.lang \
-%{cross}-ld.lang \
-%{cross}-gprof.lang \
+cross-binutils.lang \
+cross-opcodes.lang \
+cross-bfd.lang \
+cross-gas.lang \
+cross-ld.lang \
+cross-gprof.lang \
  > files.cross
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -n %{cross}-binutils-common -f files.cross
+%files common -f files.cross
 %defattr(644,root,root,755)
 %doc %{srcdir}/README
 %doc %{srcdir}/COPYING*
-%{_mandir}/man1/%{cross}-*
+%{_mandir}/man1/cross-*
 
 %define do_files() \
 %if %2 \
-%files -n %{rpmprefix}binutils-%1 -f files.%1 \
+%files -n binutils-%1 -f files.%1 \
 %defattr(644,root,root,755) \
 %endif
 
