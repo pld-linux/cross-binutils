@@ -233,17 +233,17 @@ for tool in binutils gas ld; do
 	sed -i -e "s/^DEJATOOL = .*/DEJATOOL = $tool/" $tool/Makefile.in
 done
 touch */configure
+cd ..
 
 prep_target() {
     target=$1
     cond=$2
 
     if [ $cond != 0 ]; then
-		echo $1 >&5
+		echo $1
     fi
 }
 
-cd ..
 (
 	prep_target alpha-linux-gnu		%{build_alpha}
 	prep_target arm-linux-gnu		%{build_arm}
@@ -282,14 +282,9 @@ cd ..
 	prep_target unicore32-linux-gnu	%{build_unicore32}
 	prep_target x86_64-linux-gnu	%{build_x86_64}
 	prep_target xtensa-linux-gnu	%{build_xtensa}
-) 5>target.list
+) >target.list
 
-n=0
-for target in $(cat target.list); do
-	n=1
-	break
-done
-if [ $n = 0 ]; then
+if [ $(cat target.list | wc -l) = 0 ]; then
 	echo >&2 "No targets selected"
 	exit 8
 fi
@@ -399,7 +394,7 @@ for target in $(cat target.list); do
 done
 
 # for documentation purposes only
-mkdir %{cross}-binutils
+install -d %{cross}-binutils
 cd %{cross}-binutils
 ../%{srcdir}/configure \
 	--disable-dependency-tracking \
