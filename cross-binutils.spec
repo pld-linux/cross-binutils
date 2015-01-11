@@ -49,7 +49,7 @@
 Summary:	A GNU collection of cross-compilation binary utilities
 Name:		cross-binutils
 Version:	2.25
-Release:	0.8
+Release:	0.9
 License:	GPL v3+
 Group:		Development/Tools
 # Note - the Linux Kernel binutils releases are too unstable and contain too
@@ -305,7 +305,6 @@ config_target() {
 	esac
 
 	echo $arch: target is $target
-	export CFLAGS="$RPM_OPT_FLAGS"
 	CARGS=
 
 	case $target in i?86*|sparc*|ppc*|s390*|sh*|arm*)
@@ -338,7 +337,8 @@ config_target() {
 
 	# We could optimize the cross builds size by --enable-shared but the produced
 	# binaries may be less convenient in the embedded environment.
-	LDFLAGS="-Wl,-z,relro " \
+	CFLAGS="%{rpmcflags}" \
+	LDFLAGS="%{rpmldflags} -Wl,-z,relro" \
 	../%{srcdir}/configure \
 	--disable-dependency-tracking \
 	--disable-silent-rules \
@@ -374,7 +374,7 @@ done
 
 build_target() {
 	local build_dir=${1%%%%-*}
-	%{__make} -C $build_dir %{_smp_mflags} tooldir=%{_prefix} all
+	%{__make} -C $build_dir tooldir=%{_prefix} all
 }
 
 for target in $(cat target.list); do
