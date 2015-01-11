@@ -1,54 +1,55 @@
 # TODO
 # - warning: Installed (but unpackaged) file(s) found:
 #        /usr/sh64-linux/sh64-elf
-
-%define build_all		1
-%define build_alpha		%{build_all}
-%define build_arm		%{build_all}
-%define build_aarch64		%{build_all}
-%define build_avr32		%{build_all}
-%define build_blackfin		%{build_all}
-%define build_c6x		%{build_all}
-%define build_cris		%{build_all}
-%define build_frv		%{build_all}
-%define build_h8300		%{build_all}
-%define build_hppa		%{build_all}
-%define build_hppa64		%{build_all}
-%define build_ia64		%{build_all}
-%define build_m32r		%{build_all}
-%define build_m68k		%{build_all}
-%define build_metag		%{build_all}
-%define build_microblaze	%{build_all}
-%define build_mips64		%{build_all}
-%define build_mn10300		%{build_all}
-%define build_nios2		%{build_all}
-%define build_openrisc		%{build_all}
-%define build_powerpc64		%{build_all}
-%define build_s390x		%{build_all}
-%define build_score		%{build_all}
-%define build_sh		%{build_all}
-%define build_sh64		%{build_all}
-%define build_sparc64		%{build_all}
-%define build_tile		%{build_all}
-%define build_x86_64		%{build_all}
-%define build_xtensa		%{build_all}
+#
+# Conditional build:
+# Targets:
+%bcond_without	alpha			# enable alpha
+%bcond_without	arm			# enable arm
+%bcond_without	aarch64			# enable aarch64
+%bcond_without	avr32			# enable avr32
+%bcond_without	blackfin		# enable blackfin
+%bcond_without	c6x			# enable c6x
+%bcond_without	cris			# enable cris
+%bcond_without	frv			# enable frv
+%bcond_without	h8300			# enable h8300
+%bcond_without	hppa			# enable hppa
+%bcond_without	hppa64			# enable hppa64
+%bcond_without	ia64			# enable ia64
+%bcond_without	m32r			# enable m32r
+%bcond_without	m68k			# enable m68k
+%bcond_without	metag			# enable metag
+%bcond_without	microblaze		# enable microblaze
+%bcond_without	mips64			# enable mips64
+%bcond_without	mn10300			# enable mn10300
+%bcond_without	nios2			# enable nios2
+%bcond_without	openrisc		# enable openrisc
+%bcond_without	powerpc64		# enable powerpc64
+%bcond_without	s390x			# enable s390x
+%bcond_without	score			# enable score
+%bcond_without	sh			# enable sh
+%bcond_without	sh64			# enable sh64
+%bcond_without	sparc64			# enable sparc64
+%bcond_without	tile			# enable tile
+%bcond_without	x86_64			# enable x86_64
+%bcond_without	xtensa			# enable xtensa
 
 # 32-bit packages we don't build as we can use the 64-bit package instead
-%define build_i386		0
-%define build_mips		0
-%define build_powerpc		0
-%define build_s390		0
-%define build_sparc		0
-%define build_sh4		0
+%undefine with_i386
+%undefine with_mips
+%undefine with_powerpc
+%undefine with_s390
+%undefine with_sparc
+%undefine with_sh4
 
 # not available in binutils-2.24
-%define build_hexagon		0
-%define build_unicore32		0
+%undefine with_hexagon
+%undefine with_unicore32
 
 Summary:	A GNU collection of cross-compilation binary utilities
 Name:		cross-binutils
 Version:	2.25
-Release:	0.7
+Release:	0.8
 License:	GPL v3+
 Group:		Development/Tools
 # Note - the Linux Kernel binutils releases are too unstable and contain too
@@ -137,50 +138,50 @@ Cross-build binary image generation, manipulation and query tools. \
 %package -n binutils-%1 \
 Summary:	Cross-build binary utilities for %1 \
 Group:		Development/Tools \
-Requires:	binutils-%3 = %{version}-%{release}\
+Requires:	binutils-%2 = %{version}-%{release}\
 \
 %description -n binutils-%1 \
 Cross-build binary image generation, manipulation and query tools. \
 
-%do_package alpha-linux-gnu	%{build_alpha}
-%do_package arm-linux-gnu	%{build_arm}
-%do_package aarch64-linux-gnu	%{build_aarch64}
-%do_package avr32-linux-gnu	%{build_avr32}
-%do_package bfin-linux-gnu	%{build_blackfin}
-%do_package c6x-linux-gnu	%{build_c6x}
-%do_package cris-linux-gnu	%{build_cris}
-%do_package frv-linux-gnu	%{build_frv}
-%do_package h8300-linux-gnu	%{build_h8300}
-%do_package hexagon-linux-gnu	%{build_hexagon}
-%do_package hppa-linux-gnu	%{build_hppa}
-%do_package hppa64-linux-gnu	%{build_hppa64}
-%do_package i386-linux-gnu	%{build_i386}
-%do_package ia64-linux-gnu	%{build_ia64}
-%do_package m32r-linux-gnu	%{build_m32r}
-%do_package m68k-linux-gnu	%{build_m68k}
-%do_package metag-linux-gnu	%{build_metag}
-%do_package microblaze-linux-gnu %{build_microblaze}
-%do_package mips-linux-gnu	%{build_mips}
-%do_package mips64-linux-gnu	%{build_mips64}
-%do_package mn10300-linux-gnu	%{build_mn10300}
-%do_package nios2-linux-gnu	%{build_nios2}
-%do_package openrisc-linux-gnu	%{build_openrisc}	or1k-linux-gnu
-%do_package powerpc-linux-gnu	%{build_powerpc}
-%do_package powerpc64-linux-gnu	%{build_powerpc64}
-%do_symlink ppc-linux-gnu	%{build_powerpc}	powerpc-linux-gnu
-%do_symlink ppc64-linux-gnu	%{build_powerpc64}	powerpc64-linux-gnu
-%do_package s390-linux-gnu	%{build_s390}
-%do_package s390x-linux-gnu	%{build_s390x}
-%do_package score-linux-gnu	%{build_score}
-%do_package sh-linux-gnu	%{build_sh}
-%do_package sh4-linux-gnu	%{build_sh4}
-%do_package sh64-linux-gnu	%{build_sh64}
-%do_package sparc-linux-gnu	%{build_sparc}
-%do_package sparc64-linux-gnu	%{build_sparc64}
-%do_package tile-linux-gnu	%{build_tile}
-%do_package unicore32-linux-gnu	%{build_unicore32}
-%do_package x86_64-linux-gnu	%{build_x86_64}
-%do_package xtensa-linux-gnu	%{build_xtensa}
+%do_package alpha-linux-gnu
+%do_package arm-linux-gnu
+%do_package aarch64-linux-gnu
+%do_package avr32-linux-gnu
+%do_package bfin-linux-gnu
+%do_package c6x-linux-gnu
+%do_package cris-linux-gnu
+%do_package frv-linux-gnu
+%do_package h8300-linux-gnu
+%do_package hexagon-linux-gnu
+%do_package hppa-linux-gnu
+%do_package hppa64-linux-gnu
+%do_package i386-linux-gnu
+%do_package ia64-linux-gnu
+%do_package m32r-linux-gnu
+%do_package m68k-linux-gnu
+%do_package metag-linux-gnu
+%do_package microblaze-linux-gnu
+%do_package mips-linux-gnu
+%do_package mips64-linux-gnu
+%do_package mn10300-linux-gnu
+%do_package nios2-linux-gnu
+%do_package openrisc-linux-gnu
+%do_package powerpc-linux-gnu
+%do_package powerpc64-linux-gnu
+%do_symlink ppc-linux-gnu	powerpc-linux-gnu
+%do_symlink ppc64-linux-gnu	powerpc64-linux-gnu
+%do_package s390-linux-gnu
+%do_package s390x-linux-gnu
+%do_package score-linux-gnu
+%do_package sh-linux-gnu
+%do_package sh4-linux-gnu
+%do_package sh64-linux-gnu
+%do_package sparc-linux-gnu
+%do_package sparc64-linux-gnu
+%do_package tile-linux-gnu
+%do_package unicore32-linux-gnu
+%do_package x86_64-linux-gnu
+%do_package xtensa-linux-gnu
 
 %prep
 %setup -qc
@@ -232,54 +233,45 @@ done
 touch */configure
 cd ..
 
-prep_target() {
-    target=$1
-    cond=$2
-
-    if [ $cond != 0 ]; then
-		echo $1
-    fi
-}
-
-(
-	prep_target alpha-linux-gnu		%{build_alpha}
-	prep_target arm-linux-gnu		%{build_arm}
-	prep_target aarch64-linux-gnu	%{build_aarch64}
-	prep_target avr32-linux-gnu		%{build_avr32}
-	prep_target bfin-linux-gnu		%{build_blackfin}
-	prep_target c6x-linux-gnu		%{build_c6x}
-	prep_target cris-linux-gnu		%{build_cris}
-	prep_target frv-linux-gnu		%{build_frv}
-	prep_target h8300-linux-gnu		%{build_h8300}
-	prep_target hexagon-linux-gnu	%{build_hexagon}
-	prep_target hppa-linux-gnu		%{build_hppa}
-	prep_target hppa64-linux-gnu	%{build_hppa64}
-	prep_target i386-linux-gnu		%{build_i386}
-	prep_target ia64-linux-gnu		%{build_ia64}
-	prep_target m32r-linux-gnu		%{build_m32r}
-	prep_target m68k-linux-gnu		%{build_m68k}
-	prep_target metag-linux-gnu		%{build_metag}
-	prep_target microblaze-linux-gnu	%{build_microblaze}
-	prep_target mips-linux-gnu		%{build_mips}
-	prep_target mips64-linux-gnu	%{build_mips64}
-	prep_target mn10300-linux-gnu	%{build_mn10300}
-	prep_target nios2-linux-gnu		%{build_nios2}
-	prep_target openrisc-linux-gnu	%{build_openrisc}
-	prep_target powerpc-linux-gnu	%{build_powerpc}
-	prep_target powerpc64-linux-gnu	%{build_powerpc64}
-	prep_target s390-linux-gnu		%{build_s390}
-	prep_target s390x-linux-gnu		%{build_s390x}
-	prep_target score-linux-gnu		%{build_score}
-	prep_target sh-linux-gnu		%{build_sh}
-	prep_target sh4-linux-gnu		%{build_sh4}
-	prep_target sh64-linux-gnu		%{build_sh64}
-	prep_target sparc-linux-gnu		%{build_sparc}
-	prep_target sparc64-linux-gnu	%{build_sparc64}
-	prep_target tile-linux-gnu		%{build_tile}
-	prep_target unicore32-linux-gnu	%{build_unicore32}
-	prep_target x86_64-linux-gnu	%{build_x86_64}
-	prep_target xtensa-linux-gnu	%{build_xtensa}
-) >target.list
+exec 3>&1 1>target.list
+%{?with_alpha:echo alpha-linux-gnu}
+%{?with_arm:echo arm-linux-gnu}
+%{?with_aarch64:echo aarch64-linux-gnu}
+%{?with_avr32:echo avr32-linux-gnu}
+%{?with_blackfin:echo bfin-linux-gnu}
+%{?with_c6x:echo c6x-linux-gnu}
+%{?with_cris:echo cris-linux-gnu}
+%{?with_frv:echo frv-linux-gnu}
+%{?with_h8300:echo h8300-linux-gnu}
+%{?with_hexagon:echo hexagon-linux-gnu}
+%{?with_hppa:echo hppa-linux-gnu}
+%{?with_hppa64:echo hppa64-linux-gnu}
+%{?with_i386:echo i386-linux-gnu}
+%{?with_ia64:echo ia64-linux-gnu}
+%{?with_m32r:echo m32r-linux-gnu}
+%{?with_m68k:echo m68k-linux-gnu}
+%{?with_metag:echo metag-linux-gnu}
+%{?with_microblaze:echo microblaze-linux-gnu}
+%{?with_mips:echo mips-linux-gnu}
+%{?with_mips64:echo mips64-linux-gnu}
+%{?with_mn10300:echo mn10300-linux-gnu}
+%{?with_nios2:echo nios2-linux-gnu}
+%{?with_openrisc:echo openrisc-linux-gnu}
+%{?with_powerpc:echo powerpc-linux-gnu}
+%{?with_powerpc64:echo powerpc64-linux-gnu}
+%{?with_s390:echo s390-linux-gnu}
+%{?with_s390x:echo s390x-linux-gnu}
+%{?with_score:echo score-linux-gnu}
+%{?with_sh:echo sh-linux-gnu}
+%{?with_sh4:echo sh4-linux-gnu}
+%{?with_sh64:echo sh64-linux-gnu}
+%{?with_sparc:echo sparc-linux-gnu}
+%{?with_sparc64:echo sparc64-linux-gnu}
+%{?with_tile:echo tile-linux-gnu}
+%{?with_unicore32:echo unicore32-linux-gnu}
+%{?with_x86_64:echo x86_64-linux-gnu}
+%{?with_xtensa:echo xtensa-linux-gnu}
+exec 1>&3
 
 if [ $(cat target.list | wc -l) = 0 ]; then
 	echo >&2 "No targets selected"
@@ -289,9 +281,9 @@ fi
 %build
 
 config_target() {
-	arch=$1
-	prefix=$arch-
-	build_dir=${1%%%%-*}
+	local arch=$1
+	local prefix=$arch-
+	local build_dir=${1%%%%-*}
 
 	case $arch in
 	arm-*)		target=arm-linux-gnueabi;;
@@ -382,8 +374,8 @@ for target in $(cat target.list); do
 done
 
 build_target() {
-	build_dir=${1%%%%-*}
-	make -C $build_dir %{_smp_mflags} tooldir=%{_prefix} all
+	local build_dir=${1%%%%-*}
+	%{__make} -C $build_dir %{_smp_mflags} tooldir=%{_prefix} all
 }
 
 for target in $(cat target.list); do
@@ -420,8 +412,8 @@ cd ..
 rm -rf $RPM_BUILD_ROOT
 
 install_bin() {
-	cpu=${1%%%%-*}
-	build_dir=$cpu
+	local cpu=${1%%%%-*}
+	local build_dir=$cpu
 	%{__make} install -C $build_dir DESTDIR=$RPM_BUILD_ROOT
 
 	# We want links for ppc and ppc64 also if we make powerpc or powerpc64
@@ -485,8 +477,8 @@ rmdir $RPM_BUILD_ROOT%{auxbin_prefix}/*/lib || :
 
 echo "=== BUILD file lists ==="
 build_file_list() {
-	arch=$1
-	cpu=${arch%%%%-*}
+	local arch=$1
+	local cpu=${arch%%%%-*}
 
 	case $cpu in
 	avr32)		target_cpu=avr;;
@@ -571,47 +563,45 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/cross-*
 
 %define do_files() \
-%if %2 \
 %files -n binutils-%1 -f files.%1 \
 %defattr(644,root,root,755) \
-%endif
 
-%do_files alpha-linux-gnu	%{build_alpha}
-%do_files arm-linux-gnu		%{build_arm}
-%do_files aarch64-linux-gnu	%{build_aarch64}
-%do_files avr32-linux-gnu	%{build_avr32}
-%do_files bfin-linux-gnu	%{build_blackfin}
-%do_files c6x-linux-gnu		%{build_c6x}
-%do_files cris-linux-gnu	%{build_cris}
-%do_files frv-linux-gnu		%{build_frv}
-%do_files h8300-linux-gnu	%{build_h8300}
-%do_files hexagon-linux-gnu	%{build_hexagon}
-%do_files hppa-linux-gnu	%{build_hppa}
-%do_files hppa64-linux-gnu	%{build_hppa64}
-%do_files i386-linux-gnu	%{build_i386}
-%do_files ia64-linux-gnu	%{build_ia64}
-%do_files m32r-linux-gnu	%{build_m32r}
-%do_files m68k-linux-gnu	%{build_m68k}
-%do_files metag-linux-gnu	%{build_metag}
-%do_files microblaze-linux-gnu	%{build_microblaze}
-%do_files mips-linux-gnu	%{build_mips}
-%do_files mips64-linux-gnu	%{build_mips64}
-%do_files mn10300-linux-gnu	%{build_mn10300}
-%do_files nios2-linux-gnu	%{build_nios2}
-%do_files openrisc-linux-gnu	%{build_openrisc}
-%do_files powerpc-linux-gnu	%{build_powerpc}
-%do_files powerpc64-linux-gnu	%{build_powerpc64}
-%do_files ppc-linux-gnu		%{build_powerpc}
-%do_files ppc64-linux-gnu	%{build_powerpc64}
-%do_files s390-linux-gnu	%{build_s390}
-%do_files s390x-linux-gnu	%{build_s390x}
-%do_files score-linux-gnu	%{build_score}
-%do_files sh-linux-gnu		%{build_sh}
-%do_files sh4-linux-gnu		%{build_sh4}
-%do_files sh64-linux-gnu	%{build_sh64}
-%do_files sparc-linux-gnu	%{build_sparc}
-%do_files sparc64-linux-gnu	%{build_sparc64}
-%do_files tile-linux-gnu	%{build_tile}
-%do_files unicore32-linux-gnu	%{build_unicore32}
-%do_files x86_64-linux-gnu	%{build_x86_64}
-%do_files xtensa-linux-gnu	%{build_xtensa}
+%{?with_alpha:%do_files alpha-linux-gnu}
+%{?with_arm:%do_files arm-linux-gnu}
+%{?with_aarch64:%do_files aarch64-linux-gnu}
+%{?with_avr32:%do_files avr32-linux-gnu}
+%{?with_blackfin:%do_files bfin-linux-gnu}
+%{?with_c6x:%do_files c6x-linux-gnu}
+%{?with_cris:%do_files cris-linux-gnu}
+%{?with_frv:%do_files frv-linux-gnu}
+%{?with_h8300:%do_files h8300-linux-gnu}
+%{?with_hexagon:%do_files hexagon-linux-gnu}
+%{?with_hppa:%do_files hppa-linux-gnu}
+%{?with_hppa64:%do_files hppa64-linux-gnu}
+%{?with_i386:%do_files i386-linux-gnu}
+%{?with_ia64:%do_files ia64-linux-gnu}
+%{?with_m32r:%do_files m32r-linux-gnu}
+%{?with_m68k:%do_files m68k-linux-gnu}
+%{?with_metag:%do_files metag-linux-gnu}
+%{?with_microblaze:%do_files microblaze-linux-gnu}
+%{?with_mips:%do_files mips-linux-gnu}
+%{?with_mips64:%do_files mips64-linux-gnu}
+%{?with_mn10300:%do_files mn10300-linux-gnu}
+%{?with_nios2:%do_files nios2-linux-gnu}
+%{?with_openrisc:%do_files openrisc-linux-gnu}
+%{?with_powerpc:%do_files powerpc-linux-gnu}
+%{?with_powerpc64:%do_files powerpc64-linux-gnu}
+%{?with_powerpc:%do_files ppc-linux-gnu}
+%{?with_powerpc64:%do_files ppc64-linux-gnu}
+%{?with_s390:%do_files s390-linux-gnu}
+%{?with_s390x:%do_files s390x-linux-gnu}
+%{?with_score:%do_files score-linux-gnu}
+%{?with_sh:%do_files sh-linux-gnu}
+%{?with_sh4:%do_files sh4-linux-gnu}
+%{?with_sh64:%do_files sh64-linux-gnu}
+%{?with_sparc:%do_files sparc-linux-gnu}
+%{?with_sparc64:%do_files sparc64-linux-gnu}
+%{?with_tile:%do_files tile-linux-gnu}
+%{?with_unicore32:%do_files unicore32-linux-gnu}
+%{?with_x86_64:%do_files x86_64-linux-gnu}
+%{?with_xtensa:%do_files xtensa-linux-gnu}
