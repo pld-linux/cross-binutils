@@ -233,53 +233,52 @@ done
 touch */configure
 cd ..
 
-exec 3>&1 1>target.list
-%{?with_alpha:echo alpha-linux-gnu}
-%{?with_arm:echo arm-linux-gnu}
-%{?with_aarch64:echo aarch64-linux-gnu}
-%{?with_avr32:echo avr32-linux-gnu}
-%{?with_blackfin:echo bfin-linux-gnu}
-%{?with_c6x:echo c6x-linux-gnu}
-%{?with_cris:echo cris-linux-gnu}
-%{?with_frv:echo frv-linux-gnu}
-%{?with_h8300:echo h8300-linux-gnu}
-%{?with_hexagon:echo hexagon-linux-gnu}
-%{?with_hppa:echo hppa-linux-gnu}
-%{?with_hppa64:echo hppa64-linux-gnu}
-%{?with_i386:echo i386-linux-gnu}
-%{?with_ia64:echo ia64-linux-gnu}
-%{?with_m32r:echo m32r-linux-gnu}
-%{?with_m68k:echo m68k-linux-gnu}
-%{?with_metag:echo metag-linux-gnu}
-%{?with_microblaze:echo microblaze-linux-gnu}
-%{?with_mips:echo mips-linux-gnu}
-%{?with_mips64:echo mips64-linux-gnu}
-%{?with_mn10300:echo mn10300-linux-gnu}
-%{?with_nios2:echo nios2-linux-gnu}
-%{?with_openrisc:echo openrisc-linux-gnu}
-%{?with_powerpc:echo powerpc-linux-gnu}
-%{?with_powerpc64:echo powerpc64-linux-gnu}
-%{?with_s390:echo s390-linux-gnu}
-%{?with_s390x:echo s390x-linux-gnu}
-%{?with_score:echo score-linux-gnu}
-%{?with_sh:echo sh-linux-gnu}
-%{?with_sh4:echo sh4-linux-gnu}
-%{?with_sh64:echo sh64-linux-gnu}
-%{?with_sparc:echo sparc-linux-gnu}
-%{?with_sparc64:echo sparc64-linux-gnu}
-%{?with_tile:echo tile-linux-gnu}
-%{?with_unicore32:echo unicore32-linux-gnu}
-%{?with_x86_64:echo x86_64-linux-gnu}
-%{?with_xtensa:echo xtensa-linux-gnu}
-exec 1>&3
+cat > target.list <<EOF
+%{?with_alpha:alpha-linux-gnu}
+%{?with_arm:arm-linux-gnu}
+%{?with_aarch64:aarch64-linux-gnu}
+%{?with_avr32:avr32-linux-gnu}
+%{?with_blackfin:bfin-linux-gnu}
+%{?with_c6x:c6x-linux-gnu}
+%{?with_cris:cris-linux-gnu}
+%{?with_frv:frv-linux-gnu}
+%{?with_h8300:h8300-linux-gnu}
+%{?with_hexagon:hexagon-linux-gnu}
+%{?with_hppa:hppa-linux-gnu}
+%{?with_hppa64:hppa64-linux-gnu}
+%{?with_i386:i386-linux-gnu}
+%{?with_ia64:ia64-linux-gnu}
+%{?with_m32r:m32r-linux-gnu}
+%{?with_m68k:m68k-linux-gnu}
+%{?with_metag:metag-linux-gnu}
+%{?with_microblaze:microblaze-linux-gnu}
+%{?with_mips:mips-linux-gnu}
+%{?with_mips64:mips64-linux-gnu}
+%{?with_mn10300:mn10300-linux-gnu}
+%{?with_nios2:nios2-linux-gnu}
+%{?with_openrisc:openrisc-linux-gnu}
+%{?with_powerpc:powerpc-linux-gnu}
+%{?with_powerpc64:powerpc64-linux-gnu}
+%{?with_s390:s390-linux-gnu}
+%{?with_s390x:s390x-linux-gnu}
+%{?with_score:score-linux-gnu}
+%{?with_sh:sh-linux-gnu}
+%{?with_sh4:sh4-linux-gnu}
+%{?with_sh64:sh64-linux-gnu}
+%{?with_sparc:sparc-linux-gnu}
+%{?with_sparc64:sparc64-linux-gnu}
+%{?with_tile:tile-linux-gnu}
+%{?with_unicore32:unicore32-linux-gnu}
+%{?with_x86_64:x86_64-linux-gnu}
+%{?with_xtensa:xtensa-linux-gnu}
+EOF
 
-if [ $(cat target.list | wc -l) = 0 ]; then
+if [ $(wc -w < target.list) = 0 ]; then
 	echo >&2 "No targets selected"
 	exit 8
 fi
 
 %build
-
 config_target() {
 	local arch=$1
 	local prefix=$arch-
