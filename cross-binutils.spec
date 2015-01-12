@@ -83,7 +83,6 @@ Patch14:	binutils-2.24-ldforcele.patch
 URL:		http://sources.redhat.com/binutils
 BuildRequires:	bison
 BuildRequires:	flex
-BuildRequires:	gettext
 BuildRequires:	texinfo >= 4.0
 BuildRequires:	zlib-devel
 # BZ 920545: We need pod2man in order to build the manual pages.
