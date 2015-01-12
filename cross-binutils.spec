@@ -49,7 +49,7 @@
 Summary:	A GNU collection of cross-compilation binary utilities
 Name:		cross-binutils
 Version:	2.25
-Release:	0.9
+Release:	0.10
 License:	GPL v3+
 Group:		Development/Tools
 # Note - the Linux Kernel binutils releases are too unstable and contain too
@@ -337,6 +337,7 @@ config_target() {
 
 	# We could optimize the cross builds size by --enable-shared but the produced
 	# binaries may be less convenient in the embedded environment.
+	CC="%{__cc}" \
 	CFLAGS="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags} -Wl,-z,relro" \
 	../%{srcdir}/configure \
