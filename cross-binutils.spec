@@ -116,9 +116,7 @@ converting addresses to file and line).
 %package common
 Summary:	Cross-build binary utility documentation and translation files
 Group:		Development/Tools
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description common
 Documentation, manual pages and translation files for cross-build
