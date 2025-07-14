@@ -185,24 +185,24 @@ Cross-build binary image generation, manipulation and query tools. \
 cd %{srcdir}
 %if 1
 #%patch00 -p1 -b .latest-git~
-%patch01 -p1
-%patch02 -p1
+%patch -P01 -p1
+%patch -P02 -p1
 %ifarch ia64
 %if "%{_lib}" == "lib64"
-%patch03 -p1
+%patch -P03 -p1
 %endif
 %endif
-%patch04 -p1
-%patch05 -p1
-%patch06 -p1
-%patch07 -p1
-%patch08 -p1
-%patch09 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
+%patch -P04 -p1
+%patch -P05 -p1
+%patch -P06 -p1
+%patch -P07 -p1
+%patch -P08 -p1
+%patch -P09 -p1
+%patch -P10 -p1
+%patch -P11 -p1
+%patch -P12 -p1
+%patch -P13 -p1
+%patch -P14 -p1
 %endif
 
 # We cannot run autotools as there is an exact requirement of autoconf-2.59.
