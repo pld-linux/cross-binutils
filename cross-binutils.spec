@@ -184,7 +184,7 @@ Cross-build binary image generation, manipulation and query tools. \
 %setup -qc
 cd %{srcdir}
 %if 1
-#%patch00 -p1 -b .latest-git~
+#%%patch00 -p1 -b .latest-git~
 %patch -P01 -p1
 %patch -P02 -p1
 %ifarch ia64
